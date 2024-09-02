@@ -3,11 +3,13 @@ import type { SearchTypes } from "../../types"
 import { useState } from "react"
 import { countries } from "../../data/countries"
 import styles from './Form.module.css'
+import { Alert } from "../Alert/Alert"
 export const Form = () => {
     const [search, setSearch] = useState<SearchTypes>({
         city: '',
         country: ''
     })
+    const [alert, setAlert] = useState('')
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         setSearch({
@@ -15,8 +17,23 @@ export const Form = () => {
             [e.target.name]: e.target.value
         })
     }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (Object.values(search).includes('')) {
+            setAlert('Todos los campos son obligatorios')
+            return
+        }
+
+    }
     return (
-        <form className={styles.form}>
+        <form className={styles.form}
+            onSubmit={handleSubmit}>
+            {
+                alert && <Alert>
+                    {alert}
+                </Alert>
+            }
             <div className={styles.field}>
                 <label htmlFor="city">Ciudad</label>
                 <input id="city" type="text" name="city" placeholder="Ciudad"
