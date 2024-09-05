@@ -5,7 +5,7 @@ import { WeatherDetail } from './components/WeatherDetail/WeatherDetail'
 import useWeather from './hooks/useWeather'
 function App() {
 
-  const { fetchWeather, weather } = useWeather()
+  const { fetchWeather, weather, hasWeather } = useWeather()
   return (
     <>
 
@@ -13,7 +13,13 @@ function App() {
       <div className={styles.container}>
         <Form
           fetchWeather={fetchWeather} />
-        <WeatherDetail weather={weather} />
+
+        {
+          hasWeather && (
+            <WeatherDetail weather={weather} />
+          )
+        }
+
 
       </div>
     </>
