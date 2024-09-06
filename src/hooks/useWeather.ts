@@ -55,11 +55,11 @@ export default function useWeather() {
             temp_min: 0
         }
     })
-
+    const [loading, setLoading] = useState(false)
     const fetchWeather = async (search: SearchTypes) => {
 
 
-
+        setLoading(true)
         try {
             const appId = import.meta.env.VITE_API_KEY
             const geoUrl = `https://api.openweathermap.org/data/2.5/weather?q=${search.city},${search.country}&appid=${appId}`
@@ -87,6 +87,7 @@ export default function useWeather() {
             const result = Weather.safeParse(wheaterReult)
             if (result.success) {
                 setWeather(result.data)
+
             }
 
             //valibot
@@ -99,6 +100,8 @@ export default function useWeather() {
 
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false)
         }
 
 
@@ -108,6 +111,7 @@ export default function useWeather() {
     return {
         hasWeather,
         weather,
+        loading,
         fetchWeather
     }
 }
